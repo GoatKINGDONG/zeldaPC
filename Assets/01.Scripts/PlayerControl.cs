@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Timers;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
@@ -8,6 +10,9 @@ using UnityEngine.UI;
 
 public class PlayerControl : MonoBehaviour
 {
+
+    private CheckFloor _checkFloor;
+    public Transform LegsCheck;
 
     public static Collider[] floorCollider;
     private CharacterController _cc;
@@ -23,12 +28,16 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private bool drawGizmo;
 
-    [SerializeField] private float _yVelocity = 0;
+
+
+    [SerializeField] public float _yVelocity = 0;
+    [SerializeField] public bool isFloor;
     private Vector3 _dir;
 
     private Vector2 _in_dir;
     private bool _jump = true;  //  점프를 할 수 있는 상태
     private bool _isGround = true;  //  바닥에 닿아있는 가?
+    private bool _isMoveable = true;  //  바닥에 닿아있는 가?
     private Animator _anim;
 
 
@@ -41,6 +50,7 @@ public class PlayerControl : MonoBehaviour
 
     private void Awake()
     {
+        _checkFloor = LegsCheck.GetComponent<CheckFloor>();
         _cc = GetComponent<CharacterController>();
         _playerInputSystem = new PlayerInputSystem();
         _run_Action = _playerInputSystem.Player.Run;
@@ -69,22 +79,31 @@ public class PlayerControl : MonoBehaviour
         _cc = GetComponent<CharacterController>();
     }
 
-
+    private void Update()
+    {
+        // Debug.Log(_jump);
+        isFloor = _checkFloor.isFloor;
+    }
 
 
     private void FixedUpdate()
     {
-        Move();
+        // Debug.Log(isFloor + "playerControlller");
+        if(_isMoveable == true)
+        {
+             Move();
+        }
     }
-
+    Vector3 velocity = Vector3.zero;
     public void Move()
     {
         _dir = new Vector3(_in_dir.x * _speed * _runSpeed * Time.fixedDeltaTime, 0, _in_dir.y * _speed * _runSpeed * Time.fixedDeltaTime);
         Gravity();
         // _yVelocity += _gravity * Time.deltaTime;
         // _dir.y = _yVelocity;
-
-        _cc.Move(_dir);
+        Vector3 targetPos = transform.position + _dir;
+        _cc.Move(Vector3.SmoothDamp(transform.position, targetPos, ref velocity,0.05f) - transform.position);
+        // _cc.Move(Vector3.SmoothDamp(transform.position,targetPos,0.7f));
         if (_in_dir.magnitude != 0)
         {
 
@@ -108,34 +127,66 @@ public class PlayerControl : MonoBehaviour
 
     public void RealJump()
     {
+        _jump = false;
         _yVelocity = _jumpPower;
     }
 
     public void OnJump()
     {
-        Debug.Log("점프!");
-        _anim.SetBool("A_Jump", _jump);
-        // _jump = false;
-        // _yVelocity = _jumpPower;
+        if (_jump == true)
+        {
+            Debug.Log("점프!");
+            _anim.SetTrigger("A_Jump_T");
+            _anim.SetBool("A_Jump",false);            
+        }
     }
 
     public void ORun(InputAction.CallbackContext context)
     {
         _runSpeed = 2;
-        Debug.Log("달리기 시작");
+        // Debug.Log("달리기 시작");
     }
 
     public void OnRunRelease(InputAction.CallbackContext context)
     {
-        Debug.Log("달리기 종료");
+        // Debug.Log("달리기 종료");
         _runSpeed = 1;
     }
 
+    // 물체에 물리값 적용
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.rigidbody)
         {
-            hit.rigidbody.AddForce(_dir/hit.rigidbody.mass);
+            hit.rigidbody.AddForce(_dir / hit.rigidbody.mass);
+            // Debug.Log("물체에 닿음");
+        }
+        if (hit.gameObject.tag == "FLOOR" && _jump == false)
+        {            
+            // isFloor = true;
+            _jump = true;
+            IsLanding();
+            // _yVelocity = 0;
+            _dir = Vector3.zero;
         }
     }
+
+    public void IsLanding()
+    {
+        if (isFloor == true && _jump == true)
+        {
+            Debug.Log("착지 " + isFloor );
+            _anim.SetBool("A_Jump", true);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public void Landing_To_Move(float tmp)
+    {        
+        _speed = tmp;
+    }
+
 }
