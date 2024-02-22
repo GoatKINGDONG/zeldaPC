@@ -18,7 +18,8 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float _gravity;
     [SerializeField] private float _jumpPower = 5f;
     [SerializeField] private float _jumpTime = 2;
-    [SerializeField] private float _jumpDamage = 2;
+    [SerializeField] private float _jumpDamage_Max = -1.9f;
+    [SerializeField] private float _jumpDamage_Min = -0.1f;
     [SerializeField] private bool _isJump;
     [SerializeField] private float _runSpeed = 1;
     [SerializeField] private float _turnSpeed = 20;
@@ -71,11 +72,11 @@ public class PlayerControl : MonoBehaviour
     {
         if (isFloor == true)    //  바닥에 닿았을 때
         {
-            if (_yVelocity <= -1.9) //  가속력이 몇 이하라면
+            if (_yVelocity <= _jumpDamage_Max) //  가속력이 몇 이하라면
             {
                 Debug.Log("낙뎀!");
             }
-            else if (_yVelocity >= -1.9 && _yVelocity <= -0.1f) //  가속력이 적당하다면
+            else if (_yVelocity >= _jumpDamage_Max && _yVelocity <= _jumpDamage_Min) //  가속력이 적당하다면
             {
                 Debug.Log("착지 성공");
             }
