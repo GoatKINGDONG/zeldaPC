@@ -25,12 +25,10 @@ public class PlayerControl : MonoBehaviour
 
     //  부정확한 바닥체크 다시 확인하기 위하여
     [SerializeField] private float _maxDistance;
-    [SerializeField] private Vector3 _boxSize;
-    [SerializeField] private LayerMask groundLayer;
-
 
 
     [SerializeField] public float _yVelocity = 0;
+    [SerializeField] public float _landingVelociry = 0;
     [SerializeField] public bool isFloor;
     private Vector2 _moveDirection;
 
@@ -44,16 +42,14 @@ public class PlayerControl : MonoBehaviour
 
     PlayerInputSystem _playerInputSystem;
 
-    InputAction _run_Action;
-
 
     private void Awake()
     {
         _checkFloor = LegsCheck.GetComponent<CheckFloor>();
         _rb = GetComponent<Rigidbody>();
         _playerInputSystem = new PlayerInputSystem();
-        _run_Action = _playerInputSystem.Player.Run;
         _anim = GetComponent<Animator>();
+
     }
 
     /// <summary>
@@ -67,11 +63,30 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _gravity = _rb.velocity.y;
-        Debug.Log(_gravity);
+        Gravity();
         Move();
     }
 
+    private void Gravity()
+    {
+        if (isFloor == true)    //  바닥에 닿았을 때
+        {
+            if (_yVelocity <= -1.9) //  가속력이 몇 이하라면
+            {
+                Debug.Log("낙뎀!");
+            }
+            else if (_yVelocity >= -1.9 && _yVelocity <= -0.1f) //  가속력이 적당하다면
+            {
+                Debug.Log("착지 성공");
+            }
+            _anim.SetFloat("A_Land", _yVelocity);
+            _yVelocity = 0;
+        }
+        else
+        {
+            _yVelocity += _gravity * Time.fixedDeltaTime;
+        }
+    }
     private void OnDisable()
     {
         _playerInputSystem.Disable();
@@ -95,36 +110,32 @@ public class PlayerControl : MonoBehaviour
 
             _rb.velocity = new Vector3(_moveDirection.x, _rb.velocity.y, _moveDirection.y);
             _anim.SetFloat("A_Move", _moveDirection.magnitude * _speed * _runSpeed);
+            Debug.Log(_moveDirection.magnitude * _speed * _runSpeed);
         }
     }
+
     public void RealJump()
     {
         _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
-        Debug.Log("점프!");
+
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "FLOOR" && _isJump == false)
+        if (other.gameObject.tag == "FLOOR")
         {
-            bool landingSuccess;
-            if (_rb.velocity.y >= _jumpDamage)
+            if (_isJump == false)
             {
-                landingSuccess = false;
+                _isJump = true;
             }
-            else
-            {
-                landingSuccess = true;
-            }
-            _anim.SetBool("A_Land", landingSuccess);
-            _isJump = true;
         }
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && _isMove == true)
         {
+
             _anim.SetTrigger("A_Jump_T");
             _isJump = false;
         }
@@ -136,4 +147,15 @@ public class PlayerControl : MonoBehaviour
         if (context.canceled) { _runSpeed = 1; }
     }
 
+    public void StandUp(float success)
+    {
+        if (success == 0)
+        {
+            _isMove = false;
+        }
+        else
+        {
+            _isMove = true;
+        }
+    }
 }

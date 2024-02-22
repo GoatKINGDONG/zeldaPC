@@ -39,21 +39,7 @@ public class CheckFloor : MonoBehaviour
     }
     private void Update()
     {
-        // Debug.Log(CheckingFloor());
-        // _playerControl.IsLanding();
-        CheckingFloor();
-        if(CheckingFloor()==true)
-        {
-            _playerControl._yVelocity =0;
-        }
-        
-    }
-
-    //  바닥 체크용 박스 크기 시각화
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(CenterFoots(), _boxSize);
+        _playerControl.isFloor = CheckingFloor(); 
     }
 
     //  바닥 체크하는 함수
