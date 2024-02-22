@@ -841,7 +841,7 @@ MonoBehaviour:
   LegsCheck: {fileID: 1564627231}
   _speed: 200
   _gravity: -3
-  _jumpPower: 6
+  _jumpPower: 10
   _jumpTime: 0
   _jumpDamage: 2
   _isJump: 1

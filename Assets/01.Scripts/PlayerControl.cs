@@ -84,7 +84,7 @@ public class PlayerControl : MonoBehaviour
     }
     private void Move()
     {
-        _moveDirection = _input * _speed * _runSpeed * Time.fixedDeltaTime;                                    
+        _moveDirection = _input * _speed * _runSpeed * Time.fixedDeltaTime;
         if (_isMove)
         {
             _lookDir = new Vector3(_input.x, 0, _input.y);
@@ -93,13 +93,14 @@ public class PlayerControl : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_lookDir), _turnSpeed * Time.fixedDeltaTime);
             }
 
-            _rb.velocity = new Vector3(_moveDirection.x, _rb.velocity.y,_moveDirection.y);
+            _rb.velocity = new Vector3(_moveDirection.x, _rb.velocity.y, _moveDirection.y);
             _anim.SetFloat("A_Move", _moveDirection.magnitude * _speed * _runSpeed);
         }
     }
     public void RealJump()
     {
-
+        _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+        Debug.Log("점프!");
     }
 
     private void OnCollisionEnter(Collision other)
@@ -120,15 +121,11 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-
-
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
-        {            
-            _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
-            Debug.Log("점프!");
-            // _anim.SetTrigger("A_Jump_T");
+        {
+            _anim.SetTrigger("A_Jump_T");
             _isJump = false;
         }
     }
