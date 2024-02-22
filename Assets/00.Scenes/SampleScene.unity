@@ -356,7 +356,7 @@ Transform:
   m_GameObject: {fileID: 567246304}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.19, y: 0.59, z: 2.63}
+  m_LocalPosition: {x: -0.19, y: 10, z: 2.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -841,8 +841,10 @@ MonoBehaviour:
   LegsCheck: {fileID: 1564627231}
   _speed: 200
   _gravity: -3
-  _jumpPower: 10
+  _jumpPower: 6
   _jumpTime: 0
+  _jumpDamage: 2
+  _isJump: 1
   _runSpeed: 1
   _turnSpeed: 20
   _maxDistance: 0
@@ -850,7 +852,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  drawGizmo: 1
   _yVelocity: 0
   isFloor: 0
   _isMove: 1
@@ -881,7 +882,7 @@ Transform:
   m_GameObject: {fileID: 1564627230}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.019961532, y: -0.4491182, z: -0.07231503}
+  m_LocalPosition: {x: 0.000000014901161, y: 0.16222286, z: -0.028493166}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -904,10 +905,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.52877957, y: 0.34296328, z: 0.40033978}
+  m_Center: {x: 0, y: -0.10527876, z: 0}
 --- !u!114 &1564627234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1121,7 +1122,10 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Pelvis'\n\tTransform 'Root'\n\tTransform 'Pelvis'\n\tFrom
+    animation clip '06_jump_Move'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -1389,7 +1393,7 @@ Transform:
   m_GameObject: {fileID: 5500952468375615577}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.937, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 2.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1718,10 +1722,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5500952468375315577}
   - component: {fileID: 5500952468366248857}
-  - component: {fileID: 1246463376}
-  - component: {fileID: 1246463374}
   - component: {fileID: 5500952468375615578}
   - component: {fileID: 5500952468375615580}
+  - component: {fileID: 1246463376}
+  - component: {fileID: 1246463374}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged

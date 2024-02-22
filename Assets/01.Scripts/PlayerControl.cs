@@ -32,7 +32,7 @@ public class PlayerControl : MonoBehaviour
 
     [SerializeField] public float _yVelocity = 0;
     [SerializeField] public bool isFloor;
-    private Vector3 _moveDirection;
+    private Vector2 _moveDirection;
 
     [SerializeField] private bool _isMove;
     private Vector3 _input;
@@ -67,7 +67,8 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Debug.Log(_rb.velocity.y);
+        _gravity = _rb.velocity.y;
+        Debug.Log(_gravity);
         Move();
     }
 
@@ -83,7 +84,7 @@ public class PlayerControl : MonoBehaviour
     }
     private void Move()
     {
-        _moveDirection = new Vector3(_input.x, 0, _input.y);                                    
+        _moveDirection = _input * _speed * _runSpeed * Time.fixedDeltaTime;                                    
         if (_isMove)
         {
             _lookDir = new Vector3(_input.x, 0, _input.y);
@@ -92,7 +93,7 @@ public class PlayerControl : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_lookDir), _turnSpeed * Time.fixedDeltaTime);
             }
 
-            _rb.velocity = new Vector3(_moveDirection.x * _speed * _runSpeed * Time.fixedDeltaTime, _rb.velocity.y,_moveDirection.y * _speed * _runSpeed);
+            _rb.velocity = new Vector3(_moveDirection.x, _rb.velocity.y,_moveDirection.y);
             _anim.SetFloat("A_Move", _moveDirection.magnitude * _speed * _runSpeed);
         }
     }
