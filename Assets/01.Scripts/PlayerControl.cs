@@ -252,6 +252,7 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         //  현재 움직인다면?
         if(direction != Vector3.zero)
         {
+            //  퍼센트로 속도를 제어하기 위함
             return _moveSpeed / DEFAULT_SPEED;
         }
         //  움직이지 않는다면?
@@ -260,9 +261,9 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         }
     }
 
+    //  애니메이션과 움직임의 속도를 맞추기 위함
     protected float GetAnimationSyncWithMovement(float currentMoveSpeed)
     {
-        Debug.Log("speed = "+  currentMoveSpeed);
         if(direction != Vector3.zero)
         {
             return currentMoveSpeed/player.MoveSpeed;            
@@ -274,13 +275,12 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
     protected void Move(){
             float runSpeed = player.IsRun == true? player.RunSpeed:1;
             
-            float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();
-
+            float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();            
             Debug.Log(currentMoveSpeed);
             LookAt();
             rb.velocity = direction * currentMoveSpeed + Vector3.up * rb.velocity.y;
             
-            anim.SetFloat("Velocity",currentMoveSpeed/player.MoveSpeed);
+            anim.SetFloat("A_Move",direction == Vector3.zero ? 0:runSpeed);
             I_MoveSpeed(GetAnimationSyncWithMovement(currentMoveSpeed));
     }
 
