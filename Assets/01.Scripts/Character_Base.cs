@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface Character_Base
 {
-    void HP();
+    float HP(float damage);
+    float MP(float mp);
+
 
 }
