@@ -1102,6 +1102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385e492647c034a5190f3f5acd51e3b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animation_Speed: 0
 --- !u!1 &1282050408
 GameObject:
   m_ObjectHideFlags: 3
@@ -2403,7 +2404,7 @@ MonoBehaviour:
   _maxHP: 0
   _currentHP: 0
   _armor: 0
-  _moveSpeed: 4
+  _moveSpeed: 5
   _runSpeed: 2
   _dashCount: 0
   _stenina: 0

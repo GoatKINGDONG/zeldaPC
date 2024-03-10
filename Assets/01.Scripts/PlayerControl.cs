@@ -229,10 +229,7 @@ public class PlayerControl : MonoBehaviour /*,I_PlayerBehavior*/
         direction = new Vector3(input.x, 0f, input.y);
     }
 
-    //  뛰는 키를 누른다면
-    // runspeed = 2;
-    // 아니라면 1;
-    
+   
     public void OnRunInput(InputAction.CallbackContext context){
         if(context.performed){
             player.IsRun = true;
@@ -242,13 +239,52 @@ public class PlayerControl : MonoBehaviour /*,I_PlayerBehavior*/
         }
     }
 
+   //   애니메이션 속도를 내가 움직이는 속도에 맞추어서 진행이 되어야 한다.
+    //  일반적인 움직임의 속도는 1, Velocity = 1;
+    //  아주 빠른 달리기 속도를 냈을 때 Velocity = 2;, 속도는 0.5f
+    protected float move;
+    [SerializeField] protected float animation_Speed = 100; //  100이면 100퍼센트의 움직임
+    protected const float DEFAULT_SPEED = 100;
+    
+    //  애니메이션 속도는 일반 속도에 반 비례해야한다.
+    //  애니메이션 및 움직임 속도 맞추는 함수
+
+    protected float ChangeSpeed()
+    {
+        //  현재 움직인다면?
+        if(direction != Vector3.zero)
+        {
+            return animation_Speed / DEFAULT_SPEED;
+        }
+        //  움직이지 않는다면?
+        else{
+            return 1;
+        }
+    }
+
+    protected float GetAnimationSyncWithMovement(float speed)
+    {
+        Debug.Log("speed = "+  speed);
+        if(direction != Vector3.zero)
+        {
+            return speed/player.MoveSpeed;
+        }     
+        else return 0;
+    
+    }
+ 
+
     protected void Move(){
             float runSpeed = player.IsRun == true? player.RunSpeed:1;
-            float currentMoveSpeed = player.MoveSpeed * runSpeed;
-            float animationSpeed = direction == Vector3.zero? 0 : 1f;
+            // float currentMoveSpeed = player.MoveSpeed * runSpeed * (animation_Speed/DEFAULT_SPEED);
+            float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();
+            Debug.Log(currentMoveSpeed);
+
+            float animationSpeed = direction == Vector3.zero? 0 : currentMoveSpeed;
             LookAt();
             rb.velocity = direction * currentMoveSpeed + Vector3.up * rb.velocity.y;
-            anim.SetFloat("Velocity", animationSpeed * runSpeed);
+            // anim.SetFloat("Velocity", animationSpeed);
+            anim.SetFloat("Velocity", GetAnimationSyncWithMovement(currentMoveSpeed));
     }
 
     protected void LookAt(){
