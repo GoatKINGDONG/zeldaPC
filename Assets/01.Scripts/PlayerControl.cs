@@ -242,11 +242,7 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         }
     }
 
-
-    
-    //  애니메이션 속도는 일반 속도에 반 비례해야한다.
-    //  애니메이션 및 움직임 속도 맞추는 함수
-
+    //  특정 상황이나 지형에 따른 속도를 변경하기 위한 함수
     protected float ChangeSpeed()
     {
         //  현재 움직인다면?
@@ -273,10 +269,13 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
  
 
     protected void Move(){
+
+            //  달리는지 체크용
             float runSpeed = player.IsRun == true? player.RunSpeed:1;
             
+            //  실제 속도 : 정상 속도 * 달리기 속도 * (디버프 혹은 지형에 따른 속도 변경)            
             float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();            
-            Debug.Log(currentMoveSpeed);
+            
             LookAt();
             rb.velocity = direction * currentMoveSpeed + Vector3.up * rb.velocity.y;
             
