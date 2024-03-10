@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
 [RequireComponent(typeof(Player))]
-public class PlayerControl : MonoBehaviour /*,I_PlayerBehavior*/
+public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
 {
 
     // private CheckFloor _checkFloor;
@@ -213,8 +213,11 @@ public class PlayerControl : MonoBehaviour /*,I_PlayerBehavior*/
     Rigidbody rb;
     Animator anim;
     protected Player player;
-    // protected const float CONVERT_UNIT_VALUE = 0.01f;
-
+    
+    [SerializeField] protected float _moveSpeed = 100; //  100이면 100퍼센트의 움직임
+    
+    protected const float DEFAULT_SPEED = 100;
+    
     private void Start() 
     {
         player = GetComponent<Player>();
@@ -239,12 +242,7 @@ public class PlayerControl : MonoBehaviour /*,I_PlayerBehavior*/
         }
     }
 
-   //   애니메이션 속도를 내가 움직이는 속도에 맞추어서 진행이 되어야 한다.
-    //  일반적인 움직임의 속도는 1, Velocity = 1;
-    //  아주 빠른 달리기 속도를 냈을 때 Velocity = 2;, 속도는 0.5f
-    protected float move;
-    [SerializeField] protected float animation_Speed = 100; //  100이면 100퍼센트의 움직임
-    protected const float DEFAULT_SPEED = 100;
+
     
     //  애니메이션 속도는 일반 속도에 반 비례해야한다.
     //  애니메이션 및 움직임 속도 맞추는 함수
@@ -254,37 +252,36 @@ public class PlayerControl : MonoBehaviour /*,I_PlayerBehavior*/
         //  현재 움직인다면?
         if(direction != Vector3.zero)
         {
-            return animation_Speed / DEFAULT_SPEED;
+            return _moveSpeed / DEFAULT_SPEED;
         }
         //  움직이지 않는다면?
         else{
-            return 1;
+            return 0;
         }
     }
 
-    protected float GetAnimationSyncWithMovement(float speed)
+    protected float GetAnimationSyncWithMovement(float currentMoveSpeed)
     {
-        Debug.Log("speed = "+  speed);
+        Debug.Log("speed = "+  currentMoveSpeed);
         if(direction != Vector3.zero)
         {
-            return speed/player.MoveSpeed;
+            return currentMoveSpeed/player.MoveSpeed;            
         }     
-        else return 0;
-    
+        else return 0;    
     }
  
 
     protected void Move(){
             float runSpeed = player.IsRun == true? player.RunSpeed:1;
-            // float currentMoveSpeed = player.MoveSpeed * runSpeed * (animation_Speed/DEFAULT_SPEED);
+            
             float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();
-            Debug.Log(currentMoveSpeed);
 
-            float animationSpeed = direction == Vector3.zero? 0 : currentMoveSpeed;
+            Debug.Log(currentMoveSpeed);
             LookAt();
             rb.velocity = direction * currentMoveSpeed + Vector3.up * rb.velocity.y;
-            // anim.SetFloat("Velocity", animationSpeed);
-            anim.SetFloat("Velocity", GetAnimationSyncWithMovement(currentMoveSpeed));
+            
+            anim.SetFloat("Velocity",currentMoveSpeed/player.MoveSpeed);
+            I_MoveSpeed(GetAnimationSyncWithMovement(currentMoveSpeed));
     }
 
     protected void LookAt(){
@@ -296,5 +293,10 @@ public class PlayerControl : MonoBehaviour /*,I_PlayerBehavior*/
 
     void FixedUpdate(){
         Move();
+    }
+
+    public void I_MoveSpeed(float speed)
+    {
+        anim.speed = speed;
     }
 }
