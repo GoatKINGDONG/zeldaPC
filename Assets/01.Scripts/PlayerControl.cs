@@ -281,7 +281,7 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
             return _moveSpeed / DEFAULT_SPEED;
         }
         //  움직이지 않는다면?  
-        //  버그 -> 여기서 발생하는 것 같음
+    
         else{
             return 0;
         }
@@ -290,15 +290,7 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
     //  애니메이션과 움직임의 속도를 맞추기 위함
     protected float GetAnimationSyncWithMovement(float currentMoveSpeed)
     {
-        //  만약 움직이는 키를 눌렀다면?
-        if(direction != Vector3.zero)
-        {
-            //  1과 2로 나누기 위한 것 현재 움직이는 속도 / 움직이는 속도
-            //  현재 움직이는 속도 = 정상 속도 * 달리기 속도 * 디버프 속도(디버프에서 속도를 제어함)
-            //  
-            return currentMoveSpeed/player.MoveSpeed;            
-        }     
-        else return 1;    
+        return currentMoveSpeed/player.MoveSpeed;      
     }
  
 
