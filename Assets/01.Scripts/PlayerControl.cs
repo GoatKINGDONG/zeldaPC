@@ -212,39 +212,18 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
     //     throw new System.NotImplementedException();
     // }
 
-    public enum PlayerMoveEffect{
-        NORMAL =1,
-        FREEZE = 7,
-        FAST = 2,
-        SWIMMING = 8
-    }
-    protected PlayerMoveEffect e_PlayerMoveEffect;
-
-      public enum PlayerState{
-        MOVE,   //  평시 상태(idle, run, runfast
-        JUMP
-    }
-
-    protected PlayerState e_PlayerState;
-    private Coroutine JumpCoroutine;
-
-    private IEnumerator JumpCoroutine_C(){
-       
-            Debug.Log("점프");
-            rb.AddForce(Vector3.up * player.JumpPower, ForceMode.Impulse);
-            anim.SetFloat("A_Move",0f);
-            anim.SetTrigger("A_Jump");
-            // anim.SetBool("A_IsJump",true);
-            // anim.SetFloat("A_Move",0);
-            yield return 0;
-    }
-
-    Rigidbody rb;
-    Animator anim;
     protected Player player;
     
-    [SerializeField] protected float _moveSpeed = 100; //  100이면 100퍼센트의 움직임
+    Rigidbody rb;
+    Animator anim;
+
     
+    public Vector3 direction {get; private set;}
+    
+    [SerializeField] [Tooltip("100이면 100퍼센트 움직임 - 애니메이션 속도도 영향을 줌")] 
+    protected float _moveSpeed = 100; 
+    
+    //  속도를 나누기 위한 기준(100퍼센트)
     protected const float DEFAULT_SPEED = 100;
     
     private void Start() 
@@ -254,7 +233,6 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         anim = GetComponent<Animator>();
     }
 
-    public Vector3 direction {get; private set;}
 
     public void OnMoveInput(InputAction.CallbackContext context){
         Vector2 input = context.ReadValue<Vector2>();
@@ -271,27 +249,25 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         }
     }
 
-    //  특정 상황이나 지형에 따른 속도를 변경하기 위한 함수
+    //  특정 상황이나 지형에 따른 속도를 변경하기 위한 함수 //  애니메이션 속도도 영향을 준다
     protected float ChangeSpeed()
     {
-        //  현재 움직인다면?
-        if(direction != Vector3.zero)
-        {
-            //  움직이는 속도 나누기 100임
-            return _moveSpeed / DEFAULT_SPEED;
-        }
-        //  움직이지 않는다면?  
-    
-        else{
-            return 0;
-        }
+        return _moveSpeed / DEFAULT_SPEED;
     }
 
-    //  애니메이션과 움직임의 속도를 맞추기 위함
-    protected float GetAnimationSyncWithMovement(float currentMoveSpeed)
-    {
-        return currentMoveSpeed/player.MoveSpeed;      
-    }
+    // //  애니메이션과 움직임의 속도를 맞추기 위함
+    // protected float GetAnimationSyncWithMovement(float currentMoveSpeed)
+    // {
+    //     //  0값이 나올경우 애니메이션이 도중에 멈추기 때문
+    //     //  그리고 이것은 애니메이션 속도이기에 0이 나오면 안된다
+    //     if(direction != Vector3.zero){
+    //     return currentMoveSpeed/player.MoveSpeed;      
+
+    //     }
+    //     else {
+    //         return 1;
+    //     }
+    // }
  
 
     protected void Move(){
@@ -299,16 +275,19 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
             //  달리는지 체크용
             float runSpeed = player.IsRun == true? player.RunSpeed:1;
             
-            //  실제 속도 : 정상 속도 * 달리기 속도 * (디버프 혹은 지형에 따른 속도 변경)            
+            //  실제 속도 : {정상 속도 * 달리기 속도} 움직이는 속도 * (디버프 혹은 지형에 따른 속도 변경)            
             float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();                    
             LookAt();
             rb.velocity = direction * currentMoveSpeed + Vector3.up * rb.velocity.y;
             
             anim.SetFloat("A_Move",direction == Vector3.zero ? 0:runSpeed);
             
-            I_MoveSpeed(GetAnimationSyncWithMovement(currentMoveSpeed));
+            // I_MoveSpeed(GetAnimationSyncWithMovement(currentMoveSpeed));
+            Debug.Log(ChangeSpeed() + "바뀌는 속도");
+            I_MoveSpeed(ChangeSpeed());
     }
 
+    //  키보드 방향으로 방향 전환하기
     protected void LookAt(){
         if(direction != Vector3.zero){
             Quaternion targetAngle = Quaternion.LookRotation(direction);
@@ -316,15 +295,25 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         }
     }
 
+    //  Jump 애니메이션에서 실행되는 것
+    public void Jump(){
+        rb.AddForce(Vector3.up * player.JumpPower, ForceMode.Impulse);
+        anim.SetFloat("A_JumpMove",direction.magnitude);
+    }
+
+    
     public void OnJump(InputAction.CallbackContext context)
     {
         if(context.performed){
-            StartCoroutine(JumpCoroutine_C());
+             anim.SetFloat("A_Move",0f);
+            anim.SetTrigger("A_Jump");
+          
         }
     }
     
     void FixedUpdate(){
         Move();
+        Debug.Log(direction.magnitude);
     }
 
     public void I_MoveSpeed(float speed)

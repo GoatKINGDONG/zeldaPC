@@ -775,14 +775,14 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.18047185, y: -0, z: -0, w: 0.9835802}
-  m_LocalPosition: {x: 0, y: 4.81, z: -9.89}
+  m_LocalPosition: {x: 0, y: 9.190001, z: -7.6000004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 207861557}
   - {fileID: 1111767340}
   - {fileID: 1940176276}
-  m_Father: {fileID: 5500952468375315577}
+  m_Father: {fileID: 1434531694}
   m_LocalEulerAnglesHint: {x: 20.794, y: 0, z: 0}
 --- !u!1 &1001848669
 GameObject:
@@ -1242,6 +1242,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1434531693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1434531694}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1434531694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434531693}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 963194228}
+  - {fileID: 5500952468375315577}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1518193091
 GameObject:
   m_ObjectHideFlags: 3
@@ -1702,13 +1735,13 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 7bcf6b9a03f274331a4b64115745ee70, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
     by Humanoid clips.\n\tTransform 'Pelvis'\n\tTransform 'Root'\n\tTransform 'Pelvis'\n\tFrom
-    animation clip '06_jump_Move'"
+    animation clip '06_jump_Move'\n\tFrom animation clip '06_jump_Move'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -1975,7 +2008,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5500952468375615577}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 4.38, z: 2.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1983,8 +2016,7 @@ Transform:
   - {fileID: 5500952468375315555}
   - {fileID: 5500952468375315557}
   - {fileID: 1564627231}
-  - {fileID: 963194228}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1434531694}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &5500952468375315579
 Transform:
@@ -2343,7 +2375,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &5500952468375615579
 GameObject:
@@ -2489,6 +2521,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 705507995}
   - {fileID: 74801036}
-  - {fileID: 5500952468375315577}
+  - {fileID: 1434531694}
   - {fileID: 1001848674}
   - {fileID: 567246308}
