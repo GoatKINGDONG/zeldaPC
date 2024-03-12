@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Player))]
 public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
 {
-
+  
     // private CheckFloor _checkFloor;
     // public Transform LegsCheck;
 
@@ -210,6 +212,33 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
     //     throw new System.NotImplementedException();
     // }
 
+    public enum PlayerMoveEffect{
+        NORMAL =1,
+        FREEZE = 7,
+        FAST = 2,
+        SWIMMING = 8
+    }
+    protected PlayerMoveEffect e_PlayerMoveEffect;
+
+      public enum PlayerState{
+        MOVE,   //  평시 상태(idle, run, runfast
+        JUMP
+    }
+
+    protected PlayerState e_PlayerState;
+    private Coroutine JumpCoroutine;
+
+    private IEnumerator JumpCoroutine_C(){
+       
+            Debug.Log("점프");
+            rb.AddForce(Vector3.up * player.JumpPower, ForceMode.Impulse);
+            anim.SetFloat("A_Move",0f);
+            anim.SetTrigger("A_Jump");
+            // anim.SetBool("A_IsJump",true);
+            // anim.SetFloat("A_Move",0);
+            yield return 0;
+    }
+
     Rigidbody rb;
     Animator anim;
     protected Player player;
@@ -248,10 +277,11 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         //  현재 움직인다면?
         if(direction != Vector3.zero)
         {
-            //  퍼센트로 속도를 제어하기 위함
+            //  움직이는 속도 나누기 100임
             return _moveSpeed / DEFAULT_SPEED;
         }
-        //  움직이지 않는다면?
+        //  움직이지 않는다면?  
+        //  버그 -> 여기서 발생하는 것 같음
         else{
             return 0;
         }
@@ -260,11 +290,15 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
     //  애니메이션과 움직임의 속도를 맞추기 위함
     protected float GetAnimationSyncWithMovement(float currentMoveSpeed)
     {
+        //  만약 움직이는 키를 눌렀다면?
         if(direction != Vector3.zero)
         {
+            //  1과 2로 나누기 위한 것 현재 움직이는 속도 / 움직이는 속도
+            //  현재 움직이는 속도 = 정상 속도 * 달리기 속도 * 디버프 속도(디버프에서 속도를 제어함)
+            //  
             return currentMoveSpeed/player.MoveSpeed;            
         }     
-        else return 0;    
+        else return 1;    
     }
  
 
@@ -274,12 +308,12 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
             float runSpeed = player.IsRun == true? player.RunSpeed:1;
             
             //  실제 속도 : 정상 속도 * 달리기 속도 * (디버프 혹은 지형에 따른 속도 변경)            
-            float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();            
-            
+            float currentMoveSpeed = player.MoveSpeed * runSpeed * ChangeSpeed();                    
             LookAt();
             rb.velocity = direction * currentMoveSpeed + Vector3.up * rb.velocity.y;
             
             anim.SetFloat("A_Move",direction == Vector3.zero ? 0:runSpeed);
+            
             I_MoveSpeed(GetAnimationSyncWithMovement(currentMoveSpeed));
     }
 
@@ -290,6 +324,13 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         }
     }
 
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            StartCoroutine(JumpCoroutine_C());
+        }
+    }
+    
     void FixedUpdate(){
         Move();
     }

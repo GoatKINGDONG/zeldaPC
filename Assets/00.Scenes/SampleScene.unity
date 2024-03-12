@@ -774,16 +774,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.31805605, y: 0.16920903, z: -0.05780307, w: 0.93105716}
-  m_LocalPosition: {x: -1.0555675, y: 2.5, z: -0.5181627}
+  m_LocalRotation: {x: 0.18047185, y: -0, z: -0, w: 0.9835802}
+  m_LocalPosition: {x: 0, y: 4.81, z: -9.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 207861557}
   - {fileID: 1111767340}
   - {fileID: 1940176276}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 5500952468375315577}
+  m_LocalEulerAnglesHint: {x: 20.794, y: 0, z: 0}
 --- !u!1 &1001848669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,7 +1010,19 @@ MonoBehaviour:
     m_ActionId: 9aa7cc04-21bf-4787-b32c-be86804af5d5
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1246463376}
+        m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: f5b81088-3211-4173-a7ab-6e4dba6eb63c
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
@@ -1971,6 +1983,7 @@ Transform:
   - {fileID: 5500952468375315555}
   - {fileID: 5500952468375315557}
   - {fileID: 1564627231}
+  - {fileID: 963194228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &5500952468375315579
@@ -2409,6 +2422,7 @@ MonoBehaviour:
   _dashCount: 0
   _stenina: 0
   _jumpCount: 0
+  _jumpPower: 10
   _attackCount: 0
   _isRun: 0
 --- !u!1 &5500952468375615583
@@ -2473,7 +2487,6 @@ BoxCollider:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 74801036}
   - {fileID: 5500952468375315577}
