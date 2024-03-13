@@ -70,5 +70,22 @@ public class CheckFloor : MonoBehaviour
     //     return transform.position;
     // }
 
+    [SerializeField] float _maxDistance;
+    [SerializeField] float _maxX;
+    [SerializeField] float _maxY;
+    [SerializeField] float _maxZ;
+    [SerializeField] float _legDistance;
 
+    private Color _rayColor = Color.red;
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position + new Vector3(0, _legDistance, 0),new Vector3(_maxX, _maxY, _maxZ));
+        Gizmos.color = _rayColor;    
+        
+        if(Physics.BoxCast(transform.position, transform.lossyScale /2, -transform.up, out RaycastHit hit, transform.rotation, _maxDistance )){
+            Gizmos.DrawRay(transform.position, -transform.up * hit.distance );
+            Gizmos.DrawWireCube(transform.position + -transform.up * hit.distance, transform.lossyScale);
+        }
+    }
 }

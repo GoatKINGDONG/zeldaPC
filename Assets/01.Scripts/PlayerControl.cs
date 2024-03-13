@@ -301,7 +301,7 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
         anim.SetFloat("A_JumpMove",direction.magnitude);
     }
 
-    
+    //  버튼 클릭 시 점프가 동작 애니메이션
     public void OnJump(InputAction.CallbackContext context)
     {
         if(context.performed){
@@ -313,7 +313,7 @@ public class PlayerControl : MonoBehaviour ,I_PlayerBehavior
     
     void FixedUpdate(){
         Move();
-        Debug.Log(direction.magnitude);
+        Debug.Log(rb.velocity.y);
     }
 
     public void I_MoveSpeed(float speed)

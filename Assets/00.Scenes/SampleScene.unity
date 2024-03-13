@@ -1452,7 +1452,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.52877957, y: 0.34296328, z: 0.40033978}
   m_Center: {x: 0, y: -0.10527876, z: 0}
@@ -1468,6 +1468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b590ee4fade104439b16a91b8ff0c503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxDistance: 10
 --- !u!1 &1940176274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1741,7 +1742,7 @@ Animator:
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
     by Humanoid clips.\n\tTransform 'Pelvis'\n\tTransform 'Root'\n\tTransform 'Pelvis'\n\tFrom
-    animation clip '06_jump_Move'\n\tFrom animation clip '06_jump_Move'"
+    animation clip '06_jump_Move'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
