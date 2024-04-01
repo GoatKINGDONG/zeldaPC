@@ -165,6 +165,8 @@ public class PlayerControl : MonoBehaviour, I_PlayerBehavior
                 }
                 Debug.Log("isGround가 빠르다");
                 //  높은 곳에서 떨어졌다면
+                //  아마 지금 isLandingSuccess만 왔다갔다만 잘 되면 될 것 같음
+
                 if (yVelocity < player.DamageHeight * -1 && isLandingSuccess == true)
                 {
                     //  착지에 실패한 것
