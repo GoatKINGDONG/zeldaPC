@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float Armor {get {return _armor;}}
     public float MoveSpeed {get {return _moveSpeed;}}
     public float RunSpeed {get {return _runSpeed;}}
+    public float TurnSpeed {get {return _turnSpeed;}}
     public float DashCount {get {return _dashCount;}}
     public float Stemina {get {return _jumpCount;}}
     public float JumpPower{get{return _jumpPower;}}
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected float _armor;
     [SerializeField] protected float _moveSpeed;
     [SerializeField] protected float _runSpeed;
+    [SerializeField] protected float _turnSpeed;
     
     [SerializeField] protected float _dashCount;
     [SerializeField] protected float _stenina;

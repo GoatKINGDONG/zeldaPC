@@ -29,11 +29,11 @@ public class CheckFloor : MonoBehaviour
             if (hit.distance < 0.1f)
             {
                 Debug.Log("isGround가 빠르다");
-                PlayerControl.instance.isGround = true;                
+                //PlayerControl.instance.isGround = true;                
             }
             else
             {
-                PlayerControl.instance.isGround = false;
+                //PlayerControl.instance.isGround = false;
             }
         }
     }
