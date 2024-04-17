@@ -54,7 +54,7 @@ public class DrawMagic : MonoBehaviour
     }
     
 
-    //  ¸¶¹ýµå·ÎÀ×
+    
     private void Draw_Magic()   
     {
         //lr.material = _magicMat;
@@ -77,16 +77,16 @@ public class DrawMagic : MonoBehaviour
     
     
     
-    //  ¸¶¹ý µå·ÎÀ× Á¾·á ½Ã ÃµÃµÈ÷ »ç¶óÁö±â(MaxTime¿¡ ¸ÂÃç¼­)
+    //  ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ÃµÃµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(MaxTimeï¿½ï¿½ ï¿½ï¿½ï¿½ç¼­)
     IEnumerator MagicEnd(float MaxTime)
     {
         
-        Debug.Log("ÄÚ·çÆ¾ ½ÃÀÛ");
+        Debug.Log("ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½");
         float timer = 0;
         Color mat_Color = lr.material.color;
         Color tmp = lr.material.color;
         
-        float maxFixedTime = MaxTime / Time.fixedDeltaTime; //  ÇÁ·¹ÀÓ°ªÀ¸·Î »ý°¢ÇÏÀÚ
+        float maxFixedTime = MaxTime / Time.fixedDeltaTime; //  ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         
 
         while (timer < MaxTime)
@@ -103,7 +103,7 @@ public class DrawMagic : MonoBehaviour
             yield return null;
         }
         //_time= 0;
-        Debug.Log("³¡");
+        Debug.Log("ï¿½ï¿½");
         lr.positionCount = 0;
         lr.material.color = tmp;
     }
