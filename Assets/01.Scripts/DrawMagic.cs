@@ -7,109 +7,112 @@ using UnityEngine.InputSystem;
 
 public class DrawMagic : MonoBehaviour
 {
-    [SerializeField] float _distance = 1;
-    [SerializeField] private GameObject wand_MagicSpot;
-    LineRenderer lr;
-    [SerializeField] private Vector3 prevPos = Vector3.zero;
-    [SerializeField] float _dis;
-    [SerializeField] float _time = 0;
 
-    [SerializeField] Material _magicMat;
     [SerializeField] GameObject magic;
-    [SerializeField] List<GameObject> magicList;
-    //Material tmp_Magic;
+    [SerializeField] GameObject explosion;
+    
+    ParticleSystem particle => explosion.GetComponent<ParticleSystem>();
+    public List<GameObject> magicList;
+    
+    LineRenderer lr;
+    LineRenderer prevLr;
 
-    private void Start()
+    [SerializeField] float _dis;
+    [SerializeField] float _minDis;
+    Vector3 prev;
+
+
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
     {
-        _time = 0;
-        //lr = GetComponent<LineRenderer>();
-        lr= magic.GetComponent<LineRenderer>();
-    }
-
-    private void OnEnable()
-    {
-        
-        prevPos = wand_MagicSpot.transform.position;
-
+        // prev = transform.position;
+        explosion.SetActive(false);
     }
 
     private void Update()
     {
+
         if (Input.GetMouseButtonDown(0))
         {
-            lr.material = _magicMat;
-            magicList.Add(magic);
-            magicList[0].SetActive(true);
+            prev = transform.position;
+            if(magic == null){
+                magic = magicList[0];
+            }
+            magic.SetActive(true);
+            // magic = magicList[0];
+            lr = magic.GetComponent<LineRenderer>();
+            // _dis = 0;
         }
-        else if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
-            Draw_Magic();
-        }
-
-        else if (Input.GetMouseButtonUp(0))
-        {
-            StartCoroutine(MagicEnd(10));
-
-        }
-    }
-    
-
-    
-    private void Draw_Magic()   
-    {
-        //lr.material = _magicMat;
-
-        _dis = Vector3.Distance(prevPos, wand_MagicSpot.transform.position);
-        if (Vector3.Distance(prevPos, wand_MagicSpot.transform.position) > _distance)
-        {
-            lr.positionCount++;
-            lr.SetPosition(lr.positionCount - 1, wand_MagicSpot.transform.position);
-            prevPos = wand_MagicSpot.transform.position;
-        }
-        else
-        {
-            if (lr.positionCount > 0)
+            _dis = Vector3.Distance(prev, transform.position);
+            if (_dis > _minDis)
             {
-                lr.SetPosition(lr.positionCount - 1, wand_MagicSpot.transform.position);
+                lr.positionCount++;
+                lr.SetPosition(lr.positionCount - 1, transform.position);
+
+                prev = transform.position;
+            }
+
+            if(_dis < _minDis && lr.positionCount > 0)
+            {
+                lr.SetPosition(lr.positionCount - 1, transform.position);
             }
         }
-    }
-    
-    
-    
-    //  ���� ����� ���� �� õõ�� �������(MaxTime�� ���缭)
-    IEnumerator MagicEnd(float MaxTime)
-    {
-        
-        Debug.Log("�ڷ�ƾ ����");
-        float timer = 0;
-        Color mat_Color = lr.material.color;
-        Color tmp = lr.material.color;
-        
-        float maxFixedTime = MaxTime / Time.fixedDeltaTime; //  �����Ӱ����� ��������
-        
 
-        while (timer < MaxTime)
+        if (Input.GetMouseButtonUp(0))
         {
+            magic = magicList[1];
+            magicList.Add(magicList[0]);
+            magicList.Remove(magicList[0]);
+
+            // magic = magicList[0];
+
             
-            timer += Time.fixedDeltaTime;
-            //tmp2 = timer;
-            float alpha = Mathf.Lerp(mat_Color.a, 0, timer / maxFixedTime);
-            
-            mat_Color.a = alpha;
-            
-            
-            lr.material.color = mat_Color;
+            // StartCoroutine(EndMagic());
+        }
+    }
+
+    public float _magicEndTime = 5;
+     IEnumerator EndMagic()
+    {
+        prevLr = magicList[magicList.Count-1].GetComponent<LineRenderer>();
+        // magicList.Remove(this.gameObject);
+        // magicList.Add(this.gameObject);
+        Color tmp = prevLr.material.color;
+        float time = 0;
+        float lerpMaxTime = _magicEndTime/Time.fixedDeltaTime;
+        // float lerpMaxTime = _magicEndTime/Time.fixedDeltaTime;
+        Color matColor = prevLr.material.color;
+        while (time < _magicEndTime)
+        {
+            time += Time.fixedDeltaTime;
+            float alpha = Mathf.Lerp(matColor.a,0, time/lerpMaxTime);
+
+            matColor.a = alpha;
+
+            prevLr.material.color = matColor;
             yield return null;
         }
-        //_time= 0;
-        Debug.Log("��");
-        lr.positionCount = 0;
-        lr.material.color = tmp;
+        Vector3[] dd = new Vector3[prevLr.positionCount];
+        prevLr.GetPositions(dd);
+        
+        Vector3 failure = Vector3.zero;
+        for(int i =0; i < prevLr.positionCount; i++){
+            failure += dd[i];
+        }
+        // explosion.transform.position = failure/lr.positionCount;
+        // explosion.SetActive(true);
+        // particle.Play();
+        prevLr.positionCount = 0;
+        prevLr.material.color = tmp;
+        magicList[magicList.Count-1].SetActive(false);
+        
+        
+        
     }
-
-
-
-
 
 }
