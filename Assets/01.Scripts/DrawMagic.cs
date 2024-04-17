@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,42 +12,58 @@ public class DrawMagic : MonoBehaviour
     LineRenderer lr;
     [SerializeField] private Vector3 prevPos = Vector3.zero;
     [SerializeField] float _dis;
+    [SerializeField] float _time = 0;
 
     [SerializeField] Material _magicMat;
-    Material tmp_Magic;
-    
+    [SerializeField] GameObject magic;
+    [SerializeField] List<GameObject> magicList;
+    //Material tmp_Magic;
+
     private void Start()
     {
-        lr = GetComponent<LineRenderer>();
+        _time = 0;
+        //lr = GetComponent<LineRenderer>();
+        lr= magic.GetComponent<LineRenderer>();
     }
 
     private void OnEnable()
     {
-        //lr.positionCount= 0;
+        
         prevPos = wand_MagicSpot.transform.position;
 
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
+        {
+            lr.material = _magicMat;
+            magicList.Add(magic);
+            magicList[0].SetActive(true);
+        }
+        else if (Input.GetMouseButton(0))
         {
             Draw_Magic();
         }
 
-        else
+        else if (Input.GetMouseButtonUp(0))
         {
-            lr.positionCount = 0;
+            StartCoroutine(MagicEnd(10));
+
         }
     }
+    
 
-    private void Draw_Magic()
+    //  마법드로잉
+    private void Draw_Magic()   
     {
+        //lr.material = _magicMat;
+
         _dis = Vector3.Distance(prevPos, wand_MagicSpot.transform.position);
-        if(Vector3.Distance(prevPos, wand_MagicSpot.transform.position) > _distance)
+        if (Vector3.Distance(prevPos, wand_MagicSpot.transform.position) > _distance)
         {
             lr.positionCount++;
-            lr.SetPosition(lr.positionCount-1, wand_MagicSpot.transform.position);
+            lr.SetPosition(lr.positionCount - 1, wand_MagicSpot.transform.position);
             prevPos = wand_MagicSpot.transform.position;
         }
         else
@@ -57,8 +74,39 @@ public class DrawMagic : MonoBehaviour
             }
         }
     }
+    
+    
+    
+    //  마법 드로잉 종료 시 천천히 사라지기(MaxTime에 맞춰서)
+    IEnumerator MagicEnd(float MaxTime)
+    {
+        
+        Debug.Log("코루틴 시작");
+        float timer = 0;
+        Color mat_Color = lr.material.color;
+        Color tmp = lr.material.color;
+        
+        float maxFixedTime = MaxTime / Time.fixedDeltaTime; //  프레임값으로 생각하자
+        
 
-
+        while (timer < MaxTime)
+        {
+            
+            timer += Time.fixedDeltaTime;
+            //tmp2 = timer;
+            float alpha = Mathf.Lerp(mat_Color.a, 0, timer / maxFixedTime);
+            
+            mat_Color.a = alpha;
+            
+            
+            lr.material.color = mat_Color;
+            yield return null;
+        }
+        //_time= 0;
+        Debug.Log("끝");
+        lr.positionCount = 0;
+        lr.material.color = tmp;
+    }
 
 
 

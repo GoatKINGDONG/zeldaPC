@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public float Stemina {get {return _jumpCount;}}
     public float JumpPower{get{return _jumpPower;}}
     public float DamageHeight{get{return _damageHeight;}}
+    public float MagicPower{get{return _magicPower;}}
     
     public bool IsRun {get {return _isRun;}set{_isRun = value;}}
 
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
     [SerializeField] protected float _stenina;
     [SerializeField] protected float _jumpCount;
     [SerializeField] protected float _jumpPower;
+    [SerializeField] protected float _magicPower;
     [SerializeField] protected float _damageHeight;
     [SerializeField] protected float _attackCount;
     [SerializeField] protected bool _isRun;

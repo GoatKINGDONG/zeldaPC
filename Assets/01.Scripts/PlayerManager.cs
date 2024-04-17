@@ -6,6 +6,8 @@ public class PlayerManager : MonoBehaviour
 {
     public E_Controller e_Controller;
     [SerializeField] int e_Controller_Index;
+    [SerializeField] float wheel;
+    [SerializeField] float wheel2;
     [SerializeField] Transform _wand;
     [SerializeField] Transform _falm;
     private void FixedUpdate()
@@ -14,16 +16,18 @@ public class PlayerManager : MonoBehaviour
     }
     private void Update()
     {
-        Switch_E_Controller((int)e_Controller);
+
+        Wheel();
+        Switch_E_Controller(e_Controller);
     }
 
     private void Start()
     {
         e_Controller = E_Controller.Normal;
     }
-    void Switch_E_Controller(int e_Controller_Index)
+    void Switch_E_Controller(E_Controller e)
     {
-        switch (e_Controller_Index)
+        switch ((int)e_Controller)
         {
             case 0:
                 Debug.Log(e_Controller);
@@ -40,5 +44,36 @@ public class PlayerManager : MonoBehaviour
                 _wand.transform.rotation = _falm.transform.rotation;
                 break;
         }
+    }
+    void Wheel()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            if (wheel == 2)
+            {
+                return;
+            }
+            else
+            {
+                ++wheel;
+                e_Controller++;
+            }
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            if (wheel == 0)
+            {
+                return;
+            }
+            else
+            {
+                --wheel;
+                e_Controller--;
+            }
+
+        }
+       
+
+
     }
 }
