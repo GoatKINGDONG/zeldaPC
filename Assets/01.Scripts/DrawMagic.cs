@@ -13,23 +13,25 @@ public class DrawMagic : MonoBehaviour
     
     ParticleSystem particle => explosion.GetComponent<ParticleSystem>();
     public List<GameObject> magicList;
-    
+    [SerializeField] private List<LineRenderer> lrList;
+
     LineRenderer lr;
     LineRenderer prevLr;
+    LineRenderer currentLR;
 
     [SerializeField] float _dis;
     [SerializeField] float _minDis;
     Vector3 prev;
 
-
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
     void Start()
     {
         // prev = transform.position;
         explosion.SetActive(false);
+        foreach(GameObject magic in magicList){
+            LineRenderer tmplr = magic.GetComponent<LineRenderer>();
+            lrList.Add(tmplr);
+        }
+        
     }
 
     private void Update()
@@ -38,15 +40,14 @@ public class DrawMagic : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             prev = transform.position;
-            if(magic == null){
-                magic = magicList[0];
-            }
-            magic.SetActive(true);
+            
+            magicList[0].SetActive(true);
             // magic = magicList[0];
-            lr = magic.GetComponent<LineRenderer>();
+            // lr = magic.GetComponent<LineRenderer>();
+            lr = lrList[0];
             // _dis = 0;
         }
-        if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0))
         {
             _dis = Vector3.Distance(prev, transform.position);
             if (_dis > _minDis)
@@ -63,11 +64,13 @@ public class DrawMagic : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
-            magic = magicList[1];
+            // magic = magicList[1];
             magicList.Add(magicList[0]);
             magicList.Remove(magicList[0]);
+            lrList.Add(lrList[0]);
+            lrList.Remove(lrList[0]);
 
             // magic = magicList[0];
 

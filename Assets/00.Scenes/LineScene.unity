@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   magic: {fileID: 3904739634101157352, guid: a9b2d448c0f3c364388517aca822ce8e, type: 3}
+  explosion: {fileID: 3788590125054423143}
   magicList:
   - {fileID: 3904739632977937681}
   - {fileID: 3904739634820818345}
@@ -283,6 +284,7 @@ MonoBehaviour:
   - {fileID: 3904739634184727434}
   - {fileID: 3904739632805917996}
   - {fileID: 3904739632989271930}
+  lrList: []
   _dis: 0
   _minDis: 1
   _magicEndTime: 5
@@ -1081,7 +1083,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739632813942221
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,7 +1101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739632977937681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,7 +1119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739632984694157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,7 +1137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739632989271930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,7 +1155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739633737489918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,7 +1173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739634104118214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,7 +1191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739634184727434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,7 +1209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739634450606916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1225,7 +1227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739634677917880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,7 +1245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3904739634820818345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,7 +1263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!199 &3915001475571800589
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -1488,7 +1490,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.22794116, g: 0.22794116, b: 0.22794116, a: 1}
+      maxColor: {r: 0.22794116, g: 0.22794116, b: 0.22794116, a: 0.4117647}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6410,13 +6412,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -6521,13 +6523,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -6632,13 +6634,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -6743,13 +6745,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -6854,13 +6856,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -6965,13 +6967,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -7076,13 +7078,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -7187,13 +7189,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -7298,13 +7300,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -7409,13 +7411,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
@@ -7520,13 +7522,13 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.028089881
-        inSlope: 0
-        outSlope: 0
+        value: 0.25958008
+        inSlope: 0.094037905
+        outSlope: 0.094037905
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.3018617
         value: 0.49157304
