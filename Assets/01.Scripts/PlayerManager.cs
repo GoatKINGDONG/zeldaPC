@@ -30,15 +30,15 @@ public class PlayerManager : MonoBehaviour
         switch ((int)e_Controller)
         {
             case 0:
-                Debug.Log(e_Controller);
+                
                 _wand.gameObject.SetActive(false);
                 break;
             case 1:
-                Debug.Log(e_Controller);
+                
                 _wand.gameObject.SetActive(false);
                 break;
             case 2:
-                Debug.Log(e_Controller);
+                
                 _wand.gameObject.SetActive(true);
                 _wand.transform.position = _falm.transform.position;
                 _wand.transform.rotation = _falm.transform.rotation;
