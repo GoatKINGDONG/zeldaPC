@@ -8,8 +8,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] int e_Controller_Index;
     [SerializeField] float wheel;
     [SerializeField] float wheel2;
+    
     [SerializeField] Transform _wand;
     [SerializeField] Transform _falm;
+
     private void FixedUpdate()
     {
 

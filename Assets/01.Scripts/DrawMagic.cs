@@ -5,144 +5,74 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(MagicWand))]
 public class DrawMagic : MonoBehaviour
 {
+    MagicWand _magicWand;
 
-    [SerializeField] GameObject magic;
-    [SerializeField] GameObject explosion;
+    protected GameObject _magic;    //  이 스크립트에서 다룰 게임 오브젝트
+    public GameObject Magic { get { return _magic; } }
 
-    ParticleSystem particle => explosion.GetComponent<ParticleSystem>();
+    protected List<GameObject> magicList;  //  이 스크립트에서 다룰 게임 오브젝트를 미리 받아놓은 곳
+    protected List<LineRenderer> lrList = new List<LineRenderer>(); //  계속 라인렌더를 찾기 위해 GetComponent를 쓰면 그러니 미리 잡아 놓고 시작하기 위한 라인렌더러
+
+    protected LineRenderer currentLR; //  현재 그려지고 있는 라인 랜더러
     
-    public Transform _magicStart;
-    public List<GameObject> magicList;  //  마법의 양
-    [SerializeField] private List<LineRenderer> lrList; //  계속 라인렌더를 찾기 위해 GetComponent를 쓰면 그러니 미리 잡아 놓고 시작하기 위한 라인렌더러
-  
-    
 
-    LineRenderer prevLr;    //  마법이 사라질 때 사라지는 애의 라인 랜더러
-    LineRenderer currentLR; //  현재 그려지고 있는 라인 랜더러
+    protected Vector3 _prev = Vector3.zero;   //  마법을 그릴 때 시작점을 표시하기 위해
+    public Vector3 Prev { get { return _prev; } }
 
-    
-    [SerializeField] float _dis;    //  마법이 그려질 떄 서로의 현재 거리
-    public float _minDis; //  마법이 그려질 떄 서로의 거리 기준
 
-    public Vector3 prev;   //  마법을 그릴 때 시작점을 표시하기 위해
 
-    public Color baseColor;
-    public Material mat;
+    private void Awake()
+    {
+        _magicWand = GetComponent<MagicWand>();
+    }
+
     void Start()
     {
-        explosion.SetActive(false);
-        foreach (GameObject magic in magicList)
-        {
-            LineRenderer tmplr = magic.GetComponent<LineRenderer>();
-            tmplr.material = mat;
-            lrList.Add(tmplr);
-        }
-        
-        magic = magicList[0];
-        baseColor = magic.GetComponent<LineRenderer>().material.color;
-        currentLR = lrList[0];
+        magicList = _magicWand.MagicList;
+        SetLR();
     }
 
     private void Update()
     {
 
         if (Input.GetMouseButtonDown(0))
-        {            
-            // prev = transform.position;
-            magicList[0].SetActive(true);     
-            SetLRPosition();                  
-        }
-        if (Input.GetMouseButton(0))
         {
-            UpdateLRPosition();
+            magicList[0].SetActive(true);
         }
-
         else if (Input.GetMouseButtonUp(0))
         {
             SwitchMagic();
-            // StartCoroutine(EndMagic());
         }
     }
 
-    void UpdateLRPosition()
+    void SetLR()    //  라인렌더러를 GetComponent하기엔 부하가 걸리니 미리 받아놓기
     {
-            _dis = Vector3.Distance(prev, transform.position);
-            if (_dis > _minDis)
-            {
-                SetLRPosition();
-
-                prev = transform.position;
-            }
-
-            if (_dis < _minDis && currentLR.positionCount > 0)
-            {
-                currentLR.SetPosition(currentLR.positionCount - 1, transform.position);
-            }
-    }
-
-    void SetLRPosition()
-    {
-        currentLR.positionCount++;
-        currentLR.SetPosition(currentLR.positionCount -1, transform.position);
-        if(currentLR.positionCount==1)
+        foreach (GameObject _magic in magicList)
         {
-            SetLRPosition();
+            LineRenderer tmplr = _magic.GetComponent<LineRenderer>();
+            tmplr.material = _magicWand.MagicMaterial;
+            lrList.Add(tmplr);
         }
-        
+
+        _magic = magicList[0];
+        currentLR = lrList[0];
     }
-    void SwitchMagic()
+
+
+    void SwitchMagic()  //  마법을 다룰 오브젝트 풀링을 위하여 작성
     {
-        magicList.Add(magic);
+        magicList.Add(_magic);
         magicList.RemoveAt(0);
 
         lrList.Add(currentLR);
         lrList.RemoveAt(0);
 
-        magic = magicList[0];
+        _magic = magicList[0];
         currentLR = lrList[0];
     }
-    public float _magicEndTime = 5;
 
-    IEnumerator EndMagic()
-    {
-        SwitchMagic();
-        
-        prevLr = lrList[lrList.Count-1];
-        Color tmp = prevLr.material.color;
-        float time = 0;
-        float lerpMaxTime = _magicEndTime / Time.fixedDeltaTime;
-        // float lerpMaxTime = _magicEndTime/Time.fixedDeltaTime;
-        Color matColor = prevLr.material.color;
-        while (time < _magicEndTime)
-        {
-            time += Time.fixedDeltaTime;
-            float alpha = Mathf.Lerp(matColor.a, 0, time / lerpMaxTime);
-
-            matColor.a = alpha;
-
-            prevLr.material.color = matColor;
-            yield return null;
-        }
-        Vector3[] dd = new Vector3[prevLr.positionCount];
-        prevLr.GetPositions(dd);
-
-        Vector3 failure = Vector3.zero;
-        for (int i = 0; i < prevLr.positionCount; i++)
-        {
-            failure += dd[i];
-        }
-        // explosion.transform.position = failure/lr.positionCount;
-        // explosion.SetActive(true);
-        // particle.Play();
-        prevLr.positionCount = 0;
-        // prevLr.material.color = tmp;
-        prevLr.material.color = baseColor;
-        prevLr.gameObject.SetActive(false);
-
-
-
-    }
 
 }
