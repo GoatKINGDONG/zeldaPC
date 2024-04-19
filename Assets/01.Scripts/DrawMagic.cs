@@ -8,14 +8,6 @@ using UnityEngine.InputSystem;
 public class DrawMagic : MonoBehaviour
 {
 
-    public static DrawMagic instance;
-    private void Awake() {
-        if(instance != null) 
-        {
-            Destroy(this.gameObject);
-        }
-        
-    }
     [SerializeField] GameObject magic;
     [SerializeField] GameObject explosion;
 
@@ -34,15 +26,17 @@ public class DrawMagic : MonoBehaviour
     [SerializeField] float _dis;    //  마법이 그려질 떄 서로의 현재 거리
     public float _minDis; //  마법이 그려질 떄 서로의 거리 기준
 
-    Vector3 prev;   //  마법을 그릴 때 시작점을 표시하기 위해
+    public Vector3 prev;   //  마법을 그릴 때 시작점을 표시하기 위해
 
     public Color baseColor;
+    public Material mat;
     void Start()
     {
         explosion.SetActive(false);
         foreach (GameObject magic in magicList)
         {
             LineRenderer tmplr = magic.GetComponent<LineRenderer>();
+            tmplr.material = mat;
             lrList.Add(tmplr);
         }
         
@@ -55,16 +49,10 @@ public class DrawMagic : MonoBehaviour
     {
 
         if (Input.GetMouseButtonDown(0))
-        {
-            prev = transform.position;
-
-            magicList[0].SetActive(true);
-            for(int i = 0; i<2; i++)
-            {
-
-                SetLRPosition();
-            }
-            
+        {            
+            // prev = transform.position;
+            magicList[0].SetActive(true);     
+            SetLRPosition();                  
         }
         if (Input.GetMouseButton(0))
         {
@@ -73,8 +61,8 @@ public class DrawMagic : MonoBehaviour
 
         else if (Input.GetMouseButtonUp(0))
         {
-            // SwitchMagic();
-            StartCoroutine(EndMagic());
+            SwitchMagic();
+            // StartCoroutine(EndMagic());
         }
     }
 
@@ -83,8 +71,6 @@ public class DrawMagic : MonoBehaviour
             _dis = Vector3.Distance(prev, transform.position);
             if (_dis > _minDis)
             {
-               
-
                 SetLRPosition();
 
                 prev = transform.position;
@@ -96,9 +82,15 @@ public class DrawMagic : MonoBehaviour
             }
     }
 
-    void SetLRPosition(){
+    void SetLRPosition()
+    {
         currentLR.positionCount++;
         currentLR.SetPosition(currentLR.positionCount -1, transform.position);
+        if(currentLR.positionCount==1)
+        {
+            SetLRPosition();
+        }
+        
     }
     void SwitchMagic()
     {
