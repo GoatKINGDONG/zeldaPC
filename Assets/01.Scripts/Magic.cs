@@ -19,9 +19,12 @@ public class Magic : MonoBehaviour
 
     public Vector3 prev = Vector3.zero;
 
+    public float _time = 0;
+    bool _isEnd = false;
+
     private void Awake()
     {
-        
+
         _wand = transform.parent.gameObject;
         _magicWand = _wand.GetComponent<MagicWand>();
         _drawMagic = _wand.GetComponent<DrawMagic>();
@@ -29,16 +32,20 @@ public class Magic : MonoBehaviour
         _magicEndTime = _magicWand.MagicEndTime;
         lr = GetComponent<LineRenderer>();
     }
-
+    private void OnEnable()
+    {
+        _time = 0;
+    }
     private void Update()
     {
+
         if (_drawMagic.Magic == this.gameObject)    //  혹여 빠르게 클릭이 되어 중복됨을 방지
         {
             if (Input.GetMouseButton(0))
             {
                 if (lr.positionCount < 1)
                 {
-                    
+
                     SetLRPosition();
                     prev = _wand.transform.position;
 
@@ -50,13 +57,19 @@ public class Magic : MonoBehaviour
                     UpdateLRPosition();
                 }
             }
-            
+
         }
 
         if (Input.GetMouseButtonUp(0))
-            {                
-                StartCoroutine(c_EndMagic());
-            }
+        {
+            // StartCoroutine(c_EndMagic());
+            _isEnd = true;
+
+        }
+        if (_isEnd == true)
+        {
+            Test();
+        }
 
     }
 
@@ -88,42 +101,34 @@ public class Magic : MonoBehaviour
 
 
 
-    IEnumerator c_EndMagic()  //  마법이 사라지는 코루틴
+    void Test()
     {
-        float time = 0;
-        float lerpMaxTime = _magicEndTime / Time.fixedDeltaTime;
-        Color matColor = lr.material.color;
-        while (time < _magicEndTime)
+        _time += Time.deltaTime; // 경과 시간을 업데이트
+
+        // 경과 시간이 duration보다 작을 때만 실행
+        if (_time < _magicEndTime)
         {
-            time += Time.fixedDeltaTime;
-            float alpha = Mathf.Lerp(matColor.a, 0, time / lerpMaxTime);
+            // 시작 알파값은 1(완전 불투명), 목표 알파값은 0(완전 투명)
+            float startAlpha = 1f;
+            float targetAlpha = 0f;
 
-            matColor.a = alpha;
+            // 현재 시간에 따라 알파값을 보간
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, _time / _magicEndTime);
 
-            lr.material.color = matColor;
-            if (alpha < 0.1f)
-            {
-                lr.material.color = matColor;
-                gameObject.SetActive(false);
-                lr.positionCount = 0;
-                lr.material.color = _magicWand.MagicMaterial.color;
-            }
-            yield return null;
+            // 보간된 알파값을 게임 오브젝트에 적용
+            Color color = lr.material.color;
+            color.a = alpha;
+            lr.material.color = color;
         }
-        Vector3[] dd = new Vector3[lr.positionCount];
-        lr.GetPositions(dd);
-
-        Vector3 failure = Vector3.zero;
-        for (int i = 0; i < lr.positionCount; i++)
+        else
         {
-            failure += dd[i];
+            lr.positionCount = 0;
+            lr.material.color = _magicWand.MagicMaterial.color;
+            gameObject.SetActive(false);
+            _isEnd = false;
         }
-        // explosion.transform.position = failure/lr.positionCount;
-        // explosion.SetActive(true);
-        // particle.Play();
-        // lr.positionCount = 0;
-        // prevLr.material.color = tmp;
- 
 
     }
+
+
 }

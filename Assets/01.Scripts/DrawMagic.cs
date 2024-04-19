@@ -40,7 +40,7 @@ public class DrawMagic : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            magicList[0].SetActive(true);
+            _magic.SetActive(true);
         }
         else if (Input.GetMouseButtonUp(0))
         {
