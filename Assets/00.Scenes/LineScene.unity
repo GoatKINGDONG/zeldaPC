@@ -248,6 +248,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1977274328}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &567241344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 369085492959670101, guid: 8f3d7cfcbb72e3d4286abac39f960824, type: 3}
+  m_PrefabInstance: {fileID: 5622893767731122115}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &759621663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,9 +1011,17 @@ PrefabInstance:
       value: Good_Wand
       objectReference: {fileID: 0}
     - target: {fileID: 2503647856606537882, guid: 8f3d7cfcbb72e3d4286abac39f960824, type: 3}
-      propertyPath: _magicList.Array.size
-      value: 10
+      propertyPath: _magicEndTime
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2503647856606537882, guid: 8f3d7cfcbb72e3d4286abac39f960824, type: 3}
+      propertyPath: _magicList.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503647856606537882, guid: 8f3d7cfcbb72e3d4286abac39f960824, type: 3}
+      propertyPath: _magicList.Array.data[10]
+      value: 
+      objectReference: {fileID: 567241344}
     - target: {fileID: 7656026385200151354, guid: 8f3d7cfcbb72e3d4286abac39f960824, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
